@@ -1,0 +1,166 @@
+{
+  "name": "Crypto",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "58d9c6dd-a222-4e4e-87f1-4f27910493eb",
+      "name": "When clicking ‘Test workflow’",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        820,
+        360
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "price",
+        "baseCurrencies": [
+          "bitcoin"
+        ],
+        "quoteCurrencies": [
+          "eur"
+        ],
+        "options": {}
+      },
+      "id": "30de4376-eeb4-49cf-b445-a251d4610162",
+      "name": "CoinGecko",
+      "type": "n8n-nodes-base.coinGecko",
+      "typeVersion": 1,
+      "position": [
+        1040,
+        360
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "5e22bf6e-d4cf-4c60-b69d-e267d10747e8",
+              "leftValue": "={{ $json.bitcoin.eur }}",
+              "rightValue": 70000,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "id": "2049333d-758a-4727-a77e-f90b3721f768",
+      "name": "If",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1260,
+        360
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "732021555",
+        "text": "C'est le moment de vendre du bitcoin !",
+        "additionalFields": {}
+      },
+      "id": "0ba9d0aa-404c-4c42-b749-062c384f4cde",
+      "name": "Telegram",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1620,
+        300
+      ],
+      "credentials": {
+        "telegramApi": {
+          "id": "ShOqwR9BdFV550ni",
+          "name": "Telegram account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "732021555",
+        "text": "C'est le moment d'acheter du bitcoin !",
+        "additionalFields": {}
+      },
+      "id": "386bee5f-4798-4e1d-b153-f88c78770ee1",
+      "name": "Telegram1",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1620,
+        480
+      ],
+      "credentials": {
+        "telegramApi": {
+          "id": "ShOqwR9BdFV550ni",
+          "name": "Telegram account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "CoinGecko",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CoinGecko": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Telegram1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "1bfb9e37-feeb-4c3c-a52b-305a59d77dd3",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "8be3370e2d7f3cd1b2f5656304642cf8801792cf4a5489ed40ef258ef2ae47f0"
+  },
+  "id": "n9fFTHEsMogOOK74",
+  "tags": []
+}
